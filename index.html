@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>WebDocumentation</title>
+	<base href="/" />
+	<script type="text/javascript" src="js/lib/jquery-1.8.2.js"></script>
+	<script type="text/javascript" src="js/lib/underscore-1.4.3.js"></script>
+	<script type="text/javascript" src="js/lib/showdown.js"></script>	
+	<script type="text/javascript" src="js/lib/json2.js"></script>
+	<script type="text/javascript" src="js/lib/backbone-0.9.10.js"></script>
+	<script type="text/javascript" src="js/lib/mustache.js"></script>
+
+	<script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+    <link href="font-awesome/css/font-awesome.css" rel="stylesheet" />
+
+    <script type="text/javascript" src="js/app.js"></script>
+	<link href="css/app.css" rel="stylesheet" />
+</head>
+<body>
+	<div class="nav navbar" id="navTop">
+		<div class="navbar-inner">
+			<a href="/" class="brand">WebDocumentation</a>
+			<div class="navbar-text">
+			</div>
+		</div>
+	</div>
+	<div class="container-fluid" id="mainContainer">
+		<div class="row-fluid">
+			<div class="span2">
+				<ul id="Sidebar" class="nav nav-list sidebar img-polaroid">
+				</ul>
+                <br>
+                <a class="btn btn-success" href="/novo"><i class="icon-plus-sign"></i> novo documento</a>
+            </div>
+			<div class="span9">
+				<div id="Content"></div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
