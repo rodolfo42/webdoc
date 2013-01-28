@@ -22,7 +22,7 @@ class Model {
 	}
 	
 	public function addNew($data) {
-		$this->checkCreatedTimestamp($data);
+		$this->applyCreatedTimestamp($data);
 		return $this->db->insert($this->table, $data);
 	}
 	
@@ -30,21 +30,26 @@ class Model {
         if(isset($data['id'])) {
             unset($data['id']);
         }
-		$this->checkTimestamp($data);
+		$this->applyModifiedTimestamp($data);
 		return $this->db->update($this->table, $id, $data);
 	}
+
+    public function delete($id) {
+        return $this->db->delete($this->table, $id);
+    }
 	
-	protected function checkCreatedTimestamp(&$data) {
-		$this->checkTimestamp($data, $this->createdTimestampField);
-		$this->checkTimestamp($data);
+	protected function applyCreatedTimestamp(&$data) {
+		$this->applyTimestamp($data, $this->createdTimestampField);
+		$this->applyModifiedTimestamp($data);
 	}
+
+    protected function applyModifiedTimestamp(&$data) {
+        $this->applyTimestamp($data, $this->timestampField);
+    }
 	
-	protected function checkTimestamp(&$data, $field = null) {
-		if($field == null) {
-			$field = $this->timestampField;
-		}
-		if($field != null && !isset($data[$field])) {
-			$data[$field] = $this->db->timestamp();
-		}
+	private function applyTimestamp(&$data, $field) {
+        if($field != null && !isset($data[$field])) {
+            $data[$field] = $this->db->timestamp();
+        }
 	}
 }

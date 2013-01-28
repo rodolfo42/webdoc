@@ -68,4 +68,16 @@ $app->put("/documentos/:id", function($id) use($app, $documento) {
     renderJson($result, $app->response());
 });
 
+$app->delete("/documentos/:id", function($id) use($app, $documento) {
+    $result = $documento->delete($id);
+
+    if($result) {
+        $result = success("documento deletado com sucesso");
+    } else {
+        $result = error("não foi possível deletar o documento, verifique os logs");
+    }
+
+    renderJson($result, $app->response());
+});
+
 $app->run();

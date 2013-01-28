@@ -3,6 +3,7 @@
 <head>
 	<title>WebDocumentation</title>
 	<base href="/" />
+    <meta http-equiv="Content-type" content="text/html; charset=UTF-8" />
 	<script type="text/javascript" src="js/lib/jquery-1.8.2.js"></script>
 	<script type="text/javascript" src="js/lib/underscore-1.4.3.js"></script>
 	<script type="text/javascript" src="js/lib/showdown.js"></script>	
@@ -17,6 +18,20 @@
 
     <script type="text/javascript" src="js/app.js"></script>
 	<link href="css/app.css" rel="stylesheet" />
+    <script type="text/x-template" id="list-tmpl">
+        {{#pages}}
+            <li data-doc="{{id}}">
+                <a href="view/{{id}}">
+                    {{#titulo}}
+                        {{titulo}}
+                    {{/titulo}}
+                    {{^titulo}}
+                        <i>Sem título</i>
+                    {{/titulo}}
+                </a>
+            </li>
+        {{/pages}}
+    </script>
 </head>
 <body>
 	<div class="nav navbar" id="navTop">
@@ -28,16 +43,31 @@
 	</div>
 	<div class="container-fluid" id="mainContainer">
 		<div class="row-fluid">
-			<div class="span2">
+			<div class="span3">
 				<ul id="Sidebar" class="nav nav-list sidebar img-polaroid">
 				</ul>
                 <br>
-                <a class="btn btn-success" href="/novo"><i class="icon-plus-sign"></i> novo documento</a>
+                <a class="btn btn-success btn-block addButton" href="/novo">
+                    <i class="icon-plus-sign"></i> &nbsp;
+                    novo documento
+                </a>
             </div>
-			<div class="span9">
+			<div class="span8">
 				<div id="Content"></div>
 			</div>
 		</div>
 	</div>
+    <div class="modal hide fade in">
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal">&times;</a>
+            <h3>Novo documento</h3>
+        </div>
+        <div class="modal-body">
+            Novo documento
+        </div>
+        <div class="modal-footer">
+
+        </div>
+    </div>
 </body>
 </html>

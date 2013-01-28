@@ -97,6 +97,18 @@ class Database {
 		return !!$success;
 	}
 
+    public function delete($table, $id) {
+        $sqlQuery = "DELETE FROM {$table} ";
+        $sqlQuery .= "WHERE id = {$id}";
+
+        $success = $this->query($sqlQuery);
+
+        if($success) {
+            $success = ($this->getNumAffectedRows() > 0);
+        }
+        return $success;
+    }
+
 	// helper functions
 	
 	private function enumerateFields($data) {

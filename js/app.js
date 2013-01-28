@@ -10,7 +10,11 @@ $(function() {
 
 	var Page = Backbone.Model.extend( {
 		getHTML : function() {
-			return MD.makeHtml(this.get('conteudo'));
+            var html = "";
+            if(this.get('conteudo') != null) {
+                html = MD.makeHtml(this.get('conteudo'));
+            }
+            return html;
 		}
 	});
 
@@ -21,13 +25,13 @@ $(function() {
 	var SidebarView = Backbone.View
 			.extend( {
 				el : $('#Sidebar'),
-				template : "{{#pages}}<li rel=\"{{id}}\"><a href=\"view/{{id}}\">{{titulo}}</a></li>{{/pages}}",
+				template : $('#list-tmpl').text(),
 				events: {
 					'click li a': 'onClick'
 				},
 				render : function() {
 					var html = Mustache.render(this.template, {
-						pages : this.model.toJSON()
+						pages: this.model.toJSON()
 					});
 					this.$el.html(html);
 					return this;
@@ -38,7 +42,11 @@ $(function() {
 						var url = $(e.target).attr('href');
 						appRouter.navigate(url, {trigger: true});
 					}
-				}
+				},
+                changeTo: function(id) {
+                    this.$el.find(".active").removeClass('active');
+                    this.$el.find("[data-doc=" + id + "]").addClass('active');
+                }
 			});
 
 	var ContentView = Backbone.View.extend( {
@@ -49,6 +57,9 @@ $(function() {
 					.append(this.model.getHTML())
 					.find('table')
 						.addClass('table table-bordered table-striped');
+            if(this.options.sidebarView) {
+                this.options.sidebarView.changeTo(this.model.get('id'));
+            }
 			return this;
 		}
 	});
@@ -64,10 +75,11 @@ $(function() {
 		_view : null,
 		routes : {
 			"view/:id" : "showPage",
+            "novo"     : "newDocument",
 			"*actions" : "defaultRoute"
 		},
-		initialize : function(options) {
-			self = this;
+		initialize : function() {
+			var self = this;
 			$.ajax({
 				url : url('api/documentos'),
 				dataType : 'json',
@@ -84,17 +96,25 @@ $(function() {
 			});
 			return this;
 		},
-		defaultRoute : function(actions) {
-			this.showPage(1);
+		defaultRoute : function() {
+			this.showPage(null);
 		},
 		showPage : function(id) {
+            var targetModel = null;
+            if(id != null) {
+                targetModel = this._pages.where({"id": id})[0];
+            } else {
+                targetModel = this._pages.first();
+            }
 			var contentView = new ContentView( {
-				model : this._pages.at(id - 1)
+				model: targetModel,
+                sidebarView: this._view
 			});
-			$(".active").removeClass('active');
-			$("[rel=" + id + "]").addClass('active');
 			contentView.render();
-		}
+		},
+        newDocument: function() {
+            $('.modal').modal('show');
+        }
 	});
 
 	appRouter = new AppRouter();
