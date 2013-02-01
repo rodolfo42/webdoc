@@ -17,7 +17,9 @@ function d($var) {
 }
 
 // PERSISTENCIA
-$db = new \Database\Database("localhost", "root", "", "webdoc");
+$db = new \Database\Database(DB_HOST, DB_NAME, DB_PASSWORD, DB_NAME);
+
+
 $documento = new \Model\Documento($db);
 
 // APP
